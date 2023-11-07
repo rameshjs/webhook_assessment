@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       get 'api_secrets/create'
       scope '/users' do
         post '/create', to: 'users#create'
+        put '/:id', to: 'users#update'
       end
       scope '/webhooks' do
         post '/create', to: 'web_hooks#create'

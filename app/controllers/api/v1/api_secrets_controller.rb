@@ -2,8 +2,8 @@ class Api::V1::ApiSecretsController < ApplicationController
   def generate
     key = generate_unique_key
 
-    @api_secret = ApiSecret.first
-    @api_secret.destroy if @api_secret
+    @api_secret = ApiSecret.all
+    @api_secret.destroy_all if @api_secret
 
     @api_secret = ApiSecret.new(key:)
 

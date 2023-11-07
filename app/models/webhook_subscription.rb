@@ -1,6 +1,6 @@
 class WebhookSubscription < ApplicationRecord
-
-    validates :event_type, presence: true, inclusion: { in: %w(on_create, on_update), message: "Invalid available events on_create and on_update" }
+    enum :event_type, %i[on_create on_update], validate: true
+    validates :event_type, presence: true
     validates :url, presence: true, uniqueness: {
         scope: :event_type, message: -> (_object, data){ "Event type already exists for #{data[:value]}" }
     }

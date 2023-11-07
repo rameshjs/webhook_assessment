@@ -2,6 +2,7 @@ require 'http'
 
 class WebHooksJob < ApplicationJob
   queue_as :default
+  sidekiq_options retry: 2, dead: false
 
   def perform(subscription, payload)
     puts subscription.inspect
@@ -30,6 +31,12 @@ class WebHooksJob < ApplicationJob
     return unless response.status.success?
 
     nil
+  rescue HTTP::TimeoutError
+    Sidekiq.logger.info('Timeout error')
+  rescue HTTP::ConnectionError
+    Sidekiq.logger.info('Connection error')
+  rescue OpenSSL::SSL::SSLError
+    Sidekiq.logger.info('TLS error')
   end
 
   def verification_header(payload:)

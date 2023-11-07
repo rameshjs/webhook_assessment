@@ -59,10 +59,19 @@ To subscribe to a webhook, send a POST request with the following payload:
 
 Before triggering events, you must create a secret key for secure event verification. To create a secret key, use the following endpoint:
 
-- **URL:** `http://localhost:3000/api/v1/api_secrets/create`
+- **URL:** `http://localhost:3000/api/v1/api_secrets/generate`
 - **Method:** `GET`
 
 This endpoint does not require any request payload. When you send a GET request to this endpoint, it will generate a new secret key.
+
+## Get existing Secret Key
+
+To retrive existing secret key:
+
+- **URL:** `http://localhost:3000/api/v1/api_secrets/existing_keys`
+- **Method:** `GET`
+
+This endpoint does not require any request payload. When you send a GET request to this endpoint, it will return existing keys.
 
 ## Response
 

@@ -4,6 +4,9 @@ Rails.application.routes.draw do
       scope '/users' do
         post '/create', to: 'users#create'
       end
+      scope '/webhooks' do
+        post '/create', to: 'web_hooks#create'
+      end
     end
   end
 end

@@ -5,7 +5,6 @@ class WebHooksJob < ApplicationJob
   sidekiq_options retry: 2, dead: false
 
   def perform(subscription, payload)
-    puts subscription.inspect
     return if
     subscription.nil?
 
@@ -41,8 +40,21 @@ class WebHooksJob < ApplicationJob
 
   def verification_header(payload:)
     string_to_sign = Digest::MD5.hexdigest(payload.to_json)
-    secret = ApiSecret.first.key
+    api_secret = ApiSecret.first
+
+    if api_secret.nil?
+      generate_secret
+      api_secret = ApiSecret.first
+    end
+
+    secret = api_secret.key
     hmac_digest = OpenSSL::HMAC.hexdigest('sha256', secret, string_to_sign)
     Base64.strict_encode64(hmac_digest)
+  end
+
+  def generate_secret
+    key = SecureRandom.hex(32)
+    api_secret = ApiSecret.new(key:)
+    api_secret.save
   end
 end

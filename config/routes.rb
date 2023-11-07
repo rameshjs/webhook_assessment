@@ -9,7 +9,10 @@ Rails.application.routes.draw do
       scope '/webhooks' do
         post '/create', to: 'web_hooks#create'
       end
-      resources :api_secrets, only: [:create]
+      scope '/api_secrets' do
+        get '/generate', to: 'api_secrets#generate'
+        get '/existing_keys', to: 'api_secrets#existing_keys'
+      end
     end
   end
 end
